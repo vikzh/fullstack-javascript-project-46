@@ -1,6 +1,6 @@
 import genDiffJson from '../src/compare.js';
 
-test('adds 1 + 2 to equal 3', () => {
+test('compare of 2 plain json files', () => {
     const expectedJson = {
         "- proxy": "123.234.53.22",
         "- follow": false,
