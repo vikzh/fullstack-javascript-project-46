@@ -1,12 +1,21 @@
 import _ from 'lodash';
 import fs from 'fs';
+import yaml from 'js-yaml';
 
 const compare = (filepath1, filepath2) => {
+    const documentReaders = {
+        'json': JSON.parse,
+        'yaml': yaml.load,
+        'yml': yaml.load
+    }
     try {
         const data1 = fs.readFileSync(filepath1, 'utf8');
         const data2 = fs.readFileSync(filepath2, 'utf8');
-
-        return compareObjects(JSON.parse(data1), JSON.parse(data2));
+        const fileExtension = filepath1.split('.').pop();
+        console.log(fileExtension);
+        const documentReader = documentReaders?.[fileExtension] ?? documentReaders.json;
+        console.log(documentReader);
+        return compareObjects(documentReader(data1), documentReader(data2));
     } catch (err) {
         console.error(err);
     }

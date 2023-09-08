@@ -11,3 +11,15 @@ test('compare of 2 plain json files', () => {
     }
     expect(genDiffJson('./file1', './file2')).toStrictEqual(expectedJson);
 });
+
+test('compare of 2 plain yaml files', () => {
+    const expectedJson = {
+        "- proxy": "123.234.53.22",
+        "- follow": false,
+        "+ verbose": true,
+        "host": "hexlet.io",
+        "- timeout": 50,
+        "+ timeout": 20
+    }
+    expect(genDiffJson('./file1.yml', './file2.yml')).toStrictEqual(expectedJson);
+});
