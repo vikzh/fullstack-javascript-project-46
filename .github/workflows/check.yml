@@ -8,5 +8,3 @@ jobs:
       - uses: actions/setup-node@v3
       - run: make install
       - run: make test
-  test:
-    needs: build
