@@ -8,9 +8,5 @@ jobs:
       - uses: actions/setup-node@v3
       - name: install dependencies
         run: make install
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: run tests
         run: make test
