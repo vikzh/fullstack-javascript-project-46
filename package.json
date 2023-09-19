@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/vikzh/fullstack-javascript-project-46/workflows/hexlet-check/badge.svg)](https://github.com/vikzh/fullstack-javascript-project-46/actions)",
-  "main": "gendiff.js",
+  "main": "./src/compare.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
