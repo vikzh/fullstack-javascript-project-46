@@ -12,7 +12,7 @@ test('compare of 2 plain json files', () => {
   - timeout: 50
   + timeout: 20
 }`;
-    expect(stylish(genDiffJson('./file1', './file2'))).toBe(expectedResult);
+    expect(genDiffJson('./file1', './file2')).toBe(expectedResult);
 });
 
 test('compare of 2 plain yaml files', () => {
@@ -25,7 +25,7 @@ test('compare of 2 plain yaml files', () => {
   - timeout: 50
   + timeout: 20
 }`
-    expect(stylish(genDiffJson('./file1.yml', './file2.yml'))).toStrictEqual(expectedResult);
+    expect(genDiffJson('./file1.yml', './file2.yml', 'stylish')).toStrictEqual(expectedResult);
 });
 
 test('json recursive test', () => {
@@ -75,7 +75,7 @@ test('json recursive test', () => {
   }
 }`
 
-    expect(stylish(genDiffJson('./file1_nested.json', './file2_nested.json'))).toStrictEqual(expectedResult);
+    expect(genDiffJson('./file1_nested.json', './file2_nested.json')).toStrictEqual(expectedResult);
 });
 
 test('json recursive test', () => {
@@ -91,5 +91,5 @@ Property 'common.setting6.ops' was added with value: 'vops',Property 'common.set
 Property 'group1.baz' was updated. From 'bas' to 'bars'
 Property 'group1.nest' was updated. From [complex value] to 'str'`;
 
-    expect(plain(genDiffJson('./file1_nested.json', './file2_nested.json'))).toStrictEqual(expectedResult);
+    expect(genDiffJson('./file1_nested.json', './file2_nested.json', 'plain')).toStrictEqual(expectedResult);
 });
