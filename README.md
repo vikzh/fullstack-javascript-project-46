@@ -12,6 +12,7 @@ Options:
   -f, --format <type>  output format (default: "stylish")
   -h, --help           display help for command
 ```
+[![asciicast](https://asciinema.org/a/JeUJk4txxmJfNa0IPm0eTrumD.svg)](https://asciinema.org/a/JeUJk4txxmJfNa0IPm0eTrumD)
 
 ## Install
 ```shell
