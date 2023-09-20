@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/vikzh/fullstack-javascript-project-46/workflows/hexlet-check/badge.svg)](https://github.com/vikzh/fullstack-javascript-project-46/actions)",
   "main": "./src/compare.js",
+  "bin": {
+    "gendiff": "./gendiff.js"
+  },
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
