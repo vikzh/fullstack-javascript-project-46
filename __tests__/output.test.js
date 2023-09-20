@@ -1,10 +1,7 @@
 import genDiffJson from '../src/compare.js';
-import stylish from '../src/formaters/stylish.js';
-import plain from '../src/formaters/plain.js';
 
 test('compare of 2 plain json files', () => {
-    const expectedResult =
-`{
+  const expectedResult = `{
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
@@ -12,25 +9,23 @@ test('compare of 2 plain json files', () => {
   + timeout: 20
   + verbose: true
 }`;
-    expect(genDiffJson('./file1', './file2')).toBe(expectedResult);
+  expect(genDiffJson('./file1', './file2')).toBe(expectedResult);
 });
 
 test('compare of 2 plain yaml files', () => {
-    const expectedResult =
-`{
+  const expectedResult = `{
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
   - timeout: 50
   + timeout: 20
   + verbose: true
-}`
-    expect(genDiffJson('./file1.yml', './file2.yml', 'stylish')).toStrictEqual(expectedResult);
+}`;
+  expect(genDiffJson('./file1.yml', './file2.yml', 'stylish')).toStrictEqual(expectedResult);
 });
 
 test('json recursive test', () => {
-    const expectedResult =
-`{
+  const expectedResult = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -73,14 +68,13 @@ test('json recursive test', () => {
         }
         fee: 100500
     }
-}`
+}`;
 
-    expect(genDiffJson('./file1_nested.json', './file2_nested.json')).toStrictEqual(expectedResult);
+  expect(genDiffJson('./file1_nested.json', './file2_nested.json')).toStrictEqual(expectedResult);
 });
 
 test('json recursive test', () => {
-    const expectedResult =
-`Property 'common.follow' was added with value: false
+  const expectedResult = `Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
 Property 'common.setting4' was added with value: 'blah blah'
@@ -92,5 +86,5 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
-    expect(genDiffJson('./file1_nested.json', './file2_nested.json', 'plain')).toStrictEqual(expectedResult);
+  expect(genDiffJson('./file1_nested.json', './file2_nested.json', 'plain')).toStrictEqual(expectedResult);
 });
