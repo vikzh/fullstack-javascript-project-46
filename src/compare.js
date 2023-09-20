@@ -40,44 +40,40 @@ const compareObjects = (object1, object2) => {
 
     const ast = {};
 
-    const deletedKeys = _.difference(_.keys(object1), _.keys(object2));
-    for (const key of deletedKeys) {
-        _.set(ast,`${key}.status`, 'deleted');
-        _.set(ast,`${key}.value`, object1[key]);
-    }
+    const unitedSortedKeys = _.union(_.keys(object1), _.keys(object2)).sort();
 
-    const newKeys = _.difference(_.keys(object2), _.keys(object1));
-    for (const key of newKeys) {
-        _.set(ast, `${key}.status`, 'added');
-        _.set(ast, `${key}.value`, object2[key]);
-    }
+    for (const key of unitedSortedKeys) {
+        if (_.has(object1, key) && !_.has(object2, key)) {
+            _.set(ast, `${key}.status`, 'deleted');
+            _.set(ast, `${key}.value`, object1[key]);
+        } else if (!_.has(object1, key) && _.has(object2, key)) {
+            _.set(ast, `${key}.status`, 'added');
+            _.set(ast, `${key}.value`, object2[key]);
+        } else {
+            if ((_.isObject(object1[key]) && !_.isObject(object2[key])) || (!_.isObject(object1[key]) && _.isObject(object2[key]))) {
+                _.set(ast, `${key}.status`, 'changed');
+                _.set(ast, `${key}.oldValue`, object1[key]);
+                _.set(ast, `${key}.newValue`, object2[key]);
+                return ast;
+            }
 
-    const theSameKeys = _.intersection(_.keys(object1), _.keys(object2));
-    for (const key of theSameKeys) {
-        if ((_.isObject(object1[key]) && !_.isObject(object2[key])) || (!_.isObject(object1[key]) && _.isObject(object2[key]))){
-            _.set(ast,`${key}.status`, 'changed');
-            _.set(ast,`${key}.oldValue`, object1[key]);
-            _.set(ast,`${key}.newValue`, object2[key]);
-            return ast;
+            if (_.isObject(object1[key])) {
+                _.set(ast, `${key}.status`, 'unchanged');
+                _.set(ast, `${key}.value`, compareObjects(object1[key], object2[key]));
+                continue;
+            }
+
+            if (object1[key] === object2[key]) {
+                _.set(ast, `${key}.status`, 'unchanged');
+                _.set(ast, `${key}.value`, object1[key]);
+                continue;
+            }
+
+            _.set(ast, `${key}.status`, 'changed');
+            _.set(ast, `${key}.oldValue`, object1[key]);
+            _.set(ast, `${key}.newValue`, object2[key]);
         }
-
-        if (_.isObject(object1[key])) {
-            _.set(ast,`${key}.status`, 'unchanged');
-            _.set(ast,`${key}.value`, compareObjects(object1[key], object2[key]));
-            continue;
-        }
-
-        if(object1[key] === object2[key]) {
-            _.set(ast,`${key}.status`, 'unchanged');
-            _.set(ast,`${key}.value`, object1[key]);
-            continue;
-        }
-
-        _.set(ast,`${key}.status`, 'changed');
-        _.set(ast,`${key}.oldValue`, object1[key]);
-        _.set(ast,`${key}.newValue`, object2[key]);
     }
-
     return ast;
 };
 

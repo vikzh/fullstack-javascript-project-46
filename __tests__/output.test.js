@@ -5,12 +5,12 @@ import plain from '../src/formaters/plain.js';
 test('compare of 2 plain json files', () => {
     const expectedResult =
 `{
-  - proxy: 123.234.53.22
   - follow: false
-  + verbose: true
-  host: hexlet.io
+    host: hexlet.io
+  - proxy: 123.234.53.22
   - timeout: 50
   + timeout: 20
+  + verbose: true
 }`;
     expect(genDiffJson('./file1', './file2')).toBe(expectedResult);
 });
@@ -18,12 +18,12 @@ test('compare of 2 plain json files', () => {
 test('compare of 2 plain yaml files', () => {
     const expectedResult =
 `{
-  - proxy: 123.234.53.22
   - follow: false
-  + verbose: true
-  host: hexlet.io
+    host: hexlet.io
+  - proxy: 123.234.53.22
   - timeout: 50
   + timeout: 20
+  + verbose: true
 }`
     expect(genDiffJson('./file1.yml', './file2.yml', 'stylish')).toStrictEqual(expectedResult);
 });
@@ -31,48 +31,48 @@ test('compare of 2 plain yaml files', () => {
 test('json recursive test', () => {
     const expectedResult =
 `{
+    common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+        setting6: {
+            doge: {
+              - wow: 
+              + wow: so much
+            }
+            key: value
+          + ops: vops
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
   - group2: {
-    abc: 12345
-    deep: {
-      id: 45
+        abc: 12345
+        deep: {
+            id: 45
+        }
     }
-  }
   + group3: {
-    deep: {
-      id: {
-        number: 45
-      }
+        deep: {
+            id: {
+                number: 45
+            }
+        }
+        fee: 100500
     }
-    fee: 100500
-  }
-  common: {
-    - setting2: 200
-    + follow: false
-    + setting4: blah blah
-    + setting5: {
-      key5: value5
-    }
-    setting1: Value 1
-    - setting3: true
-    + setting3: null
-    setting6: {
-      + ops: vops
-      key: value
-      doge: {
-        - wow: 
-        + wow: so much
-      }
-    }
-  }
-  group1: {
-    - baz: bas
-    + baz: bars
-    foo: bar
-    - nest: {
-      key: value
-    }
-    + nest: str
-  }
 }`
 
     expect(genDiffJson('./file1_nested.json', './file2_nested.json')).toStrictEqual(expectedResult);
@@ -80,16 +80,17 @@ test('json recursive test', () => {
 
 test('json recursive test', () => {
     const expectedResult =
-`Property 'group2' was removed
-Property 'group3' was added with value: [complex value]
+`Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
-Property 'common.follow' was added with value: false
+Property 'common.setting3' was updated. From true to null
 Property 'common.setting4' was added with value: 'blah blah'
 Property 'common.setting5' was added with value: [complex value]
-Property 'common.setting3' was updated. From true to null
-Property 'common.setting6.ops' was added with value: 'vops',Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
 Property 'group1.baz' was updated. From 'bas' to 'bars'
-Property 'group1.nest' was updated. From [complex value] to 'str'`;
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`;
 
     expect(genDiffJson('./file1_nested.json', './file2_nested.json', 'plain')).toStrictEqual(expectedResult);
 });

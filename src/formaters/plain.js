@@ -34,7 +34,7 @@ const plain = (ast) => {
                     break;
             }
         }
-        return result;
+        return result.flat();
     }
 
     return clojure(ast, []).flat().join('\n');

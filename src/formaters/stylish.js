@@ -1,19 +1,19 @@
 import _ from 'lodash';
 
 const stylish = (ast) => {
-    const defaultDepth = 2;
+    const defaultDepth = 4;
     const clojure = (obj, depth) => {
         const result = [];
         for (const [key, data] of Object.entries(obj)) {
             const {status, value, newValue, oldValue} = data;
-            const indent = `${(' ').repeat(2 * depth)}`;
-            const changedValueIndent = `${(' ').repeat(2 * depth)}`;
+            const indent = `${(' ').repeat(defaultDepth * depth)}`;
+            const changedValueIndent = `${(' ').repeat(defaultDepth * depth - 2)}`;
             switch (status) {
                 case 'deleted':
                     result.push(`${changedValueIndent}- ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
                     break;
                 case 'added':
-                    result.push(`${indent}+ ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
+                    result.push(`${changedValueIndent}+ ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
                     break;
                 case 'changed':
                     result.push(`${changedValueIndent}- ${key}: ${_.isObject(oldValue) ? clojure(oldValue, depth + 1) : oldValue}`);
