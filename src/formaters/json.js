@@ -1,5 +1,3 @@
-const toJson = (ast) => {
-    return JSON.stringify(ast);
-};
+const toJson = (ast) => JSON.stringify(ast);
 
 export default toJson;
