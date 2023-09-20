@@ -2,9 +2,9 @@ import _ from 'lodash';
 import fs from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
-import stylish from './formaters/stylish';
-import plain from './formaters/plain';
-import toJson from './formaters/json';
+import stylish from './formaters/stylish.js';
+import plain from './formaters/plain.js';
+import toJson from './formaters/json.js';
 
 const compareObjects = (object1, object2) => {
   const ast = {};
