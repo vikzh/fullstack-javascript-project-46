@@ -11,22 +11,19 @@ const stylish = (ast) => {
       const changedValueIndent = `${(' ').repeat(defaultDepth * depth - 2)}`;
       switch (status) {
         case 'deleted':
-          statuses = [...statuses, `${changedValueIndent}- ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`];
-          break;
+          return [...statuses, `${changedValueIndent}- ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`];
         case 'added':
-          statuses = [...statuses, `${changedValueIndent}+ ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`];
-          break;
+          return [...statuses, `${changedValueIndent}+ ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`];
         case 'changed':
-          statuses = [...statuses, `${changedValueIndent}- ${key}: ${_.isObject(oldValue) ? clojure(oldValue, depth + 1) : oldValue}`];
-          statuses = [...statuses, `${changedValueIndent}+ ${key}: ${_.isObject(newValue) ? clojure(newValue, depth + 1) : newValue}`];
-          break;
+          return [...statuses,
+            `${changedValueIndent}- ${key}: ${_.isObject(oldValue) ? clojure(oldValue, depth + 1) : oldValue}`,
+            `${changedValueIndent}+ ${key}: ${_.isObject(newValue) ? clojure(newValue, depth + 1) : newValue}`,
+          ];
         case 'unchanged':
-          statuses = [...statuses, `${indent}${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`];
-          break;
+          return [...statuses, `${indent}${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`];
         default:
-          statuses = [...statuses, `${indent}${key}: ${_.isObject(data) ? clojure(data, depth + 1) : data}`];
+          return [...statuses, `${indent}${key}: ${_.isObject(data) ? clojure(data, depth + 1) : data}`];
       }
-      return statuses;
     }, []);
 
     const bracketIndent = `${(' ').repeat(defaultDepth * depth - defaultDepth)}}`;
