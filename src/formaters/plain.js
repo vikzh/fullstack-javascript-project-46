@@ -14,33 +14,27 @@ const plain = (ast) => {
     return value;
   };
 
-  // eslint-disable-next-line
   const clojure = (ast, keys) => {
-    const result = [];
-    // eslint-disable-next-line
-    for (const [key, data] of Object.entries(ast)) {
+    const result = Object.entries(ast).map(([key, data]) => {
       const {
         status, value, newValue, oldValue,
       } = data;
       switch (status) {
         case 'deleted':
-          result.push(`Property '${[...keys, key].join('.')}' was removed`);
-          break;
+          return `Property '${[...keys, key].join('.')}' was removed`;
         case 'added':
-          result.push(`Property '${[...keys, key].join('.')}' was added with value: ${plainValueFormater(value)}`);
-          break;
+          return `Property '${[...keys, key].join('.')}' was added with value: ${plainValueFormater(value)}`;
         case 'changed':
-          result.push(`Property '${[...keys, key].join('.')}' was updated. From ${plainValueFormater(oldValue)} to ${plainValueFormater(newValue)}`);
-          break;
+          return `Property '${[...keys, key].join('.')}' was updated. From ${plainValueFormater(oldValue)} to ${plainValueFormater(newValue)}`;
         case 'unchanged':
           if (_.isObject(value)) {
-            result.push(clojure(value, [...keys, key]));
+            return clojure(value, [...keys, key]);
           }
-          break;
+          return [];
         default:
-          break;
+          return [];
       }
-    }
+    });
     return result.flat();
   };
 

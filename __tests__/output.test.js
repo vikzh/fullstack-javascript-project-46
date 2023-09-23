@@ -73,7 +73,7 @@ test('json recursive test', () => {
   expect(genDiffJson('./file1_nested.json', './file2_nested.json')).toStrictEqual(expectedResult);
 });
 
-test('json recursive test', () => {
+test('json recursive plain formating test', () => {
   const expectedResult = `Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null

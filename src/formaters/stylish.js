@@ -3,9 +3,7 @@ import _ from 'lodash';
 const stylish = (ast) => {
   const defaultDepth = 4;
   const clojure = (obj, depth) => {
-    const result = [];
-    // eslint-disable-next-line
-    for (const [key, data] of Object.entries(obj)) {
+    const result = Object.entries(obj).reduce((statuses, [key, data]) => {
       const {
         status, value, newValue, oldValue,
       } = data;
@@ -13,22 +11,23 @@ const stylish = (ast) => {
       const changedValueIndent = `${(' ').repeat(defaultDepth * depth - 2)}`;
       switch (status) {
         case 'deleted':
-          result.push(`${changedValueIndent}- ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
+          statuses.push(`${changedValueIndent}- ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
           break;
         case 'added':
-          result.push(`${changedValueIndent}+ ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
+          statuses.push(`${changedValueIndent}+ ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
           break;
         case 'changed':
-          result.push(`${changedValueIndent}- ${key}: ${_.isObject(oldValue) ? clojure(oldValue, depth + 1) : oldValue}`);
-          result.push(`${changedValueIndent}+ ${key}: ${_.isObject(newValue) ? clojure(newValue, depth + 1) : newValue}`);
+          statuses.push(`${changedValueIndent}- ${key}: ${_.isObject(oldValue) ? clojure(oldValue, depth + 1) : oldValue}`);
+          statuses.push(`${changedValueIndent}+ ${key}: ${_.isObject(newValue) ? clojure(newValue, depth + 1) : newValue}`);
           break;
         case 'unchanged':
-          result.push(`${indent}${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
+          statuses.push(`${indent}${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`);
           break;
         default:
-          result.push(`${indent}${key}: ${_.isObject(data) ? clojure(data, depth + 1) : data}`);
+          statuses.push(`${indent}${key}: ${_.isObject(data) ? clojure(data, depth + 1) : data}`);
       }
-    }
+      return statuses;
+    }, []);
 
     const bracketIndent = `${(' ').repeat(defaultDepth * depth - defaultDepth)}}`;
     return ['{', ...result, bracketIndent].join('\n');

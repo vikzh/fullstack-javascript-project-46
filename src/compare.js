@@ -9,7 +9,7 @@ import toJson from './formaters/json.js';
 const compareObjects = (object1, object2) => {
   const unitedSortedKeys = _.sortBy([..._.union(_.keys(object1), _.keys(object2))]);
 
-  const ast = unitedSortedKeys.reduce((ast, key) => {
+  const generatedAst = unitedSortedKeys.reduce((ast, key) => {
     if (!_.has(object2, key)) {
       _.set(ast, `${key}.status`, 'deleted');
       _.set(ast, `${key}.value`, object1[key]);
@@ -52,7 +52,7 @@ const compareObjects = (object1, object2) => {
     return ast;
   }, {});
 
-  return ast;
+  return generatedAst;
 };
 
 // eslint-disable-next-line
@@ -76,7 +76,7 @@ const compareFiles = (file1Path, file2Path, format = 'stylish') => {
 
     const data1 = fs.readFileSync(file1DirectPath, 'utf8');
     const data2 = fs.readFileSync(file2DirectPath, 'utf8');
-    const fileExtension = file1DirectPath.split('.').pop();
+    const fileExtension = file1DirectPath.split('.').at(-1);
     const documentReader = documentReaders?.[fileExtension] ?? documentReaders.json;
 
     return formatter(compareObjects(documentReader(data1), documentReader(data2)));
