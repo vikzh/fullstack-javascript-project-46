@@ -7,27 +7,20 @@ import plain from './formaters/plain.js';
 import toJson from './formaters/json.js';
 
 const compareObjects = (object1, object2) => {
-  const ast = {};
+  const unitedSortedKeys = _.sortBy([..._.union(_.keys(object1), _.keys(object2))]);
 
-  const unitedSortedKeys = [..._.union(_.keys(object1), _.keys(object2))].sort();
-
-  // eslint-disable-next-line
-  unitedSortedKeys.map((key) => {
-
-  });
-
-  for (const key of unitedSortedKeys) {
+  const ast = unitedSortedKeys.reduce((ast, key) => {
     if (!_.has(object2, key)) {
       _.set(ast, `${key}.status`, 'deleted');
       _.set(ast, `${key}.value`, object1[key]);
       // eslint-disable-next-line
-      continue;
+      return ast;
     }
     if (!_.has(object1, key)) {
       _.set(ast, `${key}.status`, 'added');
       _.set(ast, `${key}.value`, object2[key]);
       // eslint-disable-next-line
-      continue;
+      return ast;
     }
 
     // eslint-disable-next-line
@@ -36,27 +29,28 @@ const compareObjects = (object1, object2) => {
       _.set(ast, `${key}.oldValue`, object1[key]);
       _.set(ast, `${key}.newValue`, object2[key]);
       // eslint-disable-next-line
-      continue;
+      return ast;
     }
 
     if (object1[key] === object2[key]) {
       _.set(ast, `${key}.status`, 'unchanged');
       _.set(ast, `${key}.value`, object1[key]);
       // eslint-disable-next-line
-      continue;
+      return ast;
     }
 
     if (_.isObject(object1[key]) && _.isObject(object2[key])) {
       _.set(ast, `${key}.status`, 'unchanged');
       _.set(ast, `${key}.value`, compareObjects(object1[key], object2[key]));
       // eslint-disable-next-line
-      continue;
+      return ast;
     }
 
     _.set(ast, `${key}.status`, 'changed');
     _.set(ast, `${key}.oldValue`, object1[key]);
     _.set(ast, `${key}.newValue`, object2[key]);
-  }
+    return ast;
+  }, {});
 
   return ast;
 };
