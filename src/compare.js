@@ -9,9 +9,13 @@ import toJson from './formaters/json.js';
 const compareObjects = (object1, object2) => {
   const ast = {};
 
-  const unitedSortedKeys = _.union(_.keys(object1), _.keys(object2)).sort();
+  const unitedSortedKeys = [..._.union(_.keys(object1), _.keys(object2))].sort();
 
   // eslint-disable-next-line
+  unitedSortedKeys.map((key) => {
+
+  });
+
   for (const key of unitedSortedKeys) {
     if (!_.has(object2, key)) {
       _.set(ast, `${key}.status`, 'deleted');
