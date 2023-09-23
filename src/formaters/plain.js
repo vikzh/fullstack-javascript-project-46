@@ -14,8 +14,8 @@ const plain = (ast) => {
     return value;
   };
 
-  const clojure = (ast, keys) => {
-    const result = Object.entries(ast).map(([key, data]) => {
+  const clojure = (obj, keys) => {
+    const result = Object.entries(obj).map(([key, data]) => {
       const {
         status, value, newValue, oldValue,
       } = data;
