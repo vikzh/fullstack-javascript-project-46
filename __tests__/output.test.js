@@ -9,7 +9,7 @@ test('compare of 2 plain json files', () => {
   + timeout: 20
   + verbose: true
 }`;
-  expect(genDiffJson('./file1', './file2')).toBe(expectedResult);
+  expect(genDiffJson('./fixtures/file1', './fixtures/file2')).toBe(expectedResult);
 });
 
 test('compare of 2 plain yaml files', () => {
@@ -21,7 +21,7 @@ test('compare of 2 plain yaml files', () => {
   + timeout: 20
   + verbose: true
 }`;
-  expect(genDiffJson('./file1.yml', './file2.yml', 'stylish')).toStrictEqual(expectedResult);
+  expect(genDiffJson('./fixtures/file1.yml', './fixtures/file2.yml', 'stylish')).toStrictEqual(expectedResult);
 });
 
 test('json recursive test', () => {
@@ -70,7 +70,7 @@ test('json recursive test', () => {
     }
 }`;
 
-  expect(genDiffJson('./file1_nested.json', './file2_nested.json')).toStrictEqual(expectedResult);
+  expect(genDiffJson('./fixtures/file1_nested.json', './fixtures/file2_nested.json')).toStrictEqual(expectedResult);
 });
 
 test('json recursive plain formating test', () => {
@@ -86,5 +86,5 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
-  expect(genDiffJson('./file1_nested.json', './file2_nested.json', 'plain')).toStrictEqual(expectedResult);
+  expect(genDiffJson('./fixtures/file1_nested.json', './fixtures/file2_nested.json', 'plain')).toStrictEqual(expectedResult);
 });

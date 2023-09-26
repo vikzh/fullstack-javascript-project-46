@@ -4,7 +4,7 @@
   "description": "Difference generator, The utility compares the contents of file1 and file2 and writes to the standard output the list of changes necessary to convert one file into the other.  File content is produced if the files are\nidentical.",
   "main": "./src/compare.js",
   "bin": {
-    "gendiff": "./gendiff.js"
+    "gendiff": "./bin/gendiff.js"
   },
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
