@@ -2,7 +2,7 @@
 import { program } from 'commander';
 import compareFiles from '../src/compare.js';
 
-function generateDiff(file1Path, file2Path) {
+const generateDiff = (file1Path, file2Path) => {
   console.log(compareFiles(file1Path, file2Path, program.opts().format));
 }
 
