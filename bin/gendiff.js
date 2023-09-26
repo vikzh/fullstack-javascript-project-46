@@ -4,7 +4,7 @@ import compareFiles from '../src/compare.js';
 
 const generateDiff = (file1Path, file2Path) => {
   console.log(compareFiles(file1Path, file2Path, program.opts().format));
-}
+};
 
 program
   .description('Compares two configuration files and shows a difference.')
