@@ -23,22 +23,6 @@ const compareObjects = (object1, object2) => {
       return ast;
     }
 
-    // eslint-disable-next-line
-    if ((_.isObject(object1[key]) && !_.isObject(object2[key])) || (!_.isObject(object1[key]) && _.isObject(object2[key]))) {
-      _.set(ast, `${key}.status`, 'changed');
-      _.set(ast, `${key}.oldValue`, object1[key]);
-      _.set(ast, `${key}.newValue`, object2[key]);
-      // eslint-disable-next-line
-      return ast;
-    }
-
-    if (object1[key] === object2[key]) {
-      _.set(ast, `${key}.status`, 'unchanged');
-      _.set(ast, `${key}.value`, object1[key]);
-      // eslint-disable-next-line
-      return ast;
-    }
-
     if (_.isObject(object1[key]) && _.isObject(object2[key])) {
       _.set(ast, `${key}.status`, 'unchanged');
       _.set(ast, `${key}.value`, compareObjects(object1[key], object2[key]));
@@ -46,10 +30,19 @@ const compareObjects = (object1, object2) => {
       return ast;
     }
 
-    _.set(ast, `${key}.status`, 'changed');
-    _.set(ast, `${key}.oldValue`, object1[key]);
-    _.set(ast, `${key}.newValue`, object2[key]);
-    return ast;
+    // eslint-disable-next-line
+    if (object1[key] !== object2[key]) {
+      _.set(ast, `${key}.status`, 'changed');
+      _.set(ast, `${key}.oldValue`, object1[key]);
+      _.set(ast, `${key}.newValue`, object2[key]);
+      // eslint-disable-next-line
+      return ast;
+    }
+
+      _.set(ast, `${key}.status`, 'unchanged');
+      _.set(ast, `${key}.value`, object1[key]);
+      // eslint-disable-next-line
+      return ast;
   }, {});
 
   return generatedAst;
@@ -71,12 +64,12 @@ const compareFiles = (file1Path, file2Path, format = 'stylish') => {
 
   try {
     const formatter = formattersMapper?.[format] ?? stylish;
-    const file1DirectPath = path.isAbsolute(file1Path) ? file1Path : `${process.cwd()}/${file1Path}`;
-    const file2DirectPath = path.isAbsolute(file2Path) ? file2Path : `${process.cwd()}/${file2Path}`;
+    const file1DirectPath = path.resolve(process.cwd(), file1Path);
+    const file2DirectPath = path.resolve(process.cwd(), file2Path);
 
     const data1 = fs.readFileSync(file1DirectPath, 'utf8');
     const data2 = fs.readFileSync(file2DirectPath, 'utf8');
-    const fileExtension = file1DirectPath.split('.').at(-1);
+    const fileExtension = path.extname(file1DirectPath).split('.').at(-1);
     const documentReader = documentReaders?.[fileExtension] ?? documentReaders.json;
 
     return formatter(compareObjects(documentReader(data1), documentReader(data2)));

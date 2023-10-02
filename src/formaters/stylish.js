@@ -2,13 +2,15 @@ import _ from 'lodash';
 
 const stylish = (ast) => {
   const defaultDepth = 4;
+  const replacer = ' '
+
   const clojure = (obj, depth) => {
     const result = Object.entries(obj).reduce((statuses, [key, data]) => {
       const {
         status, value, newValue, oldValue,
       } = data;
-      const indent = `${(' ').repeat(defaultDepth * depth)}`;
-      const changedValueIndent = `${(' ').repeat(defaultDepth * depth - 2)}`;
+      const indent = `${replacer.repeat(defaultDepth * depth)}`;
+      const changedValueIndent = `${replacer.repeat(defaultDepth * depth - 2)}`;
       switch (status) {
         case 'deleted':
           return [...statuses, `${changedValueIndent}- ${key}: ${_.isObject(value) ? clojure(value, depth + 1) : value}`];
@@ -26,7 +28,7 @@ const stylish = (ast) => {
       }
     }, []);
 
-    const bracketIndent = `${(' ').repeat(defaultDepth * depth - defaultDepth)}}`;
+    const bracketIndent = `${replacer.repeat(defaultDepth * depth - defaultDepth)}}`;
     return ['{', ...result, bracketIndent].join('\n');
   };
 
