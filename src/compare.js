@@ -39,10 +39,10 @@ const compareObjects = (object1, object2) => {
       return ast;
     }
 
-      _.set(ast, `${key}.status`, 'unchanged');
-      _.set(ast, `${key}.value`, object1[key]);
-      // eslint-disable-next-line
-      return ast;
+    _.set(ast, `${key}.status`, 'unchanged');
+    _.set(ast, `${key}.value`, object1[key]);
+    // eslint-disable-next-line
+    return ast;
   }, {});
 
   return generatedAst;

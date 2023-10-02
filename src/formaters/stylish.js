@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const stylish = (ast) => {
   const defaultDepth = 4;
-  const replacer = ' '
+  const replacer = ' ';
 
   const clojure = (obj, depth) => {
     const result = Object.entries(obj).reduce((statuses, [key, data]) => {
