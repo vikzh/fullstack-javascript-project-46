@@ -24,7 +24,7 @@ test.each([
     .toBe(expectedResult);
 });
 
-test('test default format', () => {
+test('default format', () => {
   const [jsonExtension] = extensions;
   expect(genDiffJson(buildFixturePath(`${file1NestedName}.${jsonExtension}`), buildFixturePath(`${file2NestedName}.${jsonExtension}`)))
     .toBe(stylishResult);
