@@ -13,42 +13,35 @@ const compareObjects = (object1, object2) => {
     if (!_.has(object2, key)) {
       _.set(ast, `${key}.status`, 'deleted');
       _.set(ast, `${key}.value`, object1[key]);
-      // eslint-disable-next-line
       return ast;
     }
     if (!_.has(object1, key)) {
       _.set(ast, `${key}.status`, 'added');
       _.set(ast, `${key}.value`, object2[key]);
-      // eslint-disable-next-line
       return ast;
     }
 
     if (_.isObject(object1[key]) && _.isObject(object2[key])) {
       _.set(ast, `${key}.status`, 'unchanged');
       _.set(ast, `${key}.value`, compareObjects(object1[key], object2[key]));
-      // eslint-disable-next-line
       return ast;
     }
 
-    // eslint-disable-next-line
     if (object1[key] !== object2[key]) {
       _.set(ast, `${key}.status`, 'changed');
       _.set(ast, `${key}.oldValue`, object1[key]);
       _.set(ast, `${key}.newValue`, object2[key]);
-      // eslint-disable-next-line
       return ast;
     }
 
     _.set(ast, `${key}.status`, 'unchanged');
     _.set(ast, `${key}.value`, object1[key]);
-    // eslint-disable-next-line
     return ast;
   }, {});
 
   return generatedAst;
 };
 
-// eslint-disable-next-line
 const compareFiles = (file1Path, file2Path, format = 'stylish') => {
   const documentReaders = {
     json: JSON.parse,
@@ -76,6 +69,8 @@ const compareFiles = (file1Path, file2Path, format = 'stylish') => {
   } catch (err) {
     console.error(err);
   }
+
+  return {};
 };
 
 export default compareFiles;
